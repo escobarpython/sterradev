@@ -1,0 +1,834 @@
+# todos os codigos abaixos nao necessariamente serao usados -- ou seja, um modelo, preset (como for). todo o codigo é de propriedade de Sterradev e não deve ser compartilhado sem autorização prévia.
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SterraDev - Sites e Landing Pages Profissionais</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: #0f172a;
+            background: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            position: relative;
+            height: 42px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .logo-img {
+            height: 42px;
+            width: auto;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-container:hover .logo-img {
+            transform: translateX(-20px);
+        }
+
+        .logo-reveal {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 42px;
+            width: auto;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-container:hover .logo-reveal {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .cta-button {
+            background: #3b82f6;
+            color: white;
+            padding: 11px 24px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .cta-button:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 0 120px;
+            background: linear-gradient(180deg, #fafbfc 0%, #ffffff 100%);
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 400px;
+            background: radial-gradient(ellipse at top, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 720px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            color: #0f172a;
+            margin-bottom: 24px;
+            line-height: 1.1;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+        }
+
+        .hero p {
+            font-size: 21px;
+            color: #475569;
+            margin-bottom: 36px;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            padding: 15px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 17px;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #3b82f6;
+            padding: 15px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 17px;
+            border: 1.5px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: #3b82f6;
+            background: #f8fafc;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 90px 0;
+            background: white;
+        }
+
+        .section-title {
+            font-size: 42px;
+            margin-bottom: 16px;
+            color: #0f172a;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            font-size: 19px;
+            color: #64748b;
+            margin-bottom: 56px;
+            max-width: 600px;
+        }
+
+        .section-header {
+            max-width: 700px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+            margin-top: 48px;
+        }
+
+        .benefit-card {
+            padding: 32px 28px;
+            background: #fafbfc;
+            border-radius: 10px;
+            border: 1px solid #e8ecef;
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            border-color: #cbd5e1;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+
+        .benefit-icon {
+            font-size: 36px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .benefit-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .benefit-card p {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* How it works */
+        .how-it-works {
+            padding: 90px 0;
+            background: #fafbfc;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .step-card {
+            background: white;
+            padding: 32px 28px;
+            border-radius: 10px;
+            border: 1px solid #e8ecef;
+            position: relative;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .step-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .step-card p {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Tech Stack */
+        .tech-stack {
+            padding: 90px 0;
+            background: white;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .tech-card {
+            background: #fafbfc;
+            padding: 32px 28px;
+            border-radius: 10px;
+            border: 1px solid #e8ecef;
+            transition: all 0.3s ease;
+        }
+
+        .tech-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.1);
+        }
+
+        .tech-card h3 {
+            color: #3b82f6;
+            margin-bottom: 12px;
+            font-size: 19px;
+            font-weight: 600;
+        }
+
+        .tech-card p {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Pricing */
+        .pricing {
+            padding: 90px 0;
+            background: #fafbfc;
+        }
+
+        .pricing-note {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-bottom: 48px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pricing-note p {
+            color: #78350f;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .pricing-note strong {
+            color: #451a03;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 28px;
+            margin-top: 56px;
+        }
+
+        .pricing-card {
+            background: white;
+            border: 1.5px solid #e8ecef;
+            border-radius: 12px;
+            padding: 40px 32px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+        }
+
+        .pricing-card.featured {
+            border-color: #3b82f6;
+            border-width: 2px;
+            box-shadow: 0 12px 32px rgba(59, 130, 246, 0.15);
+            transform: scale(1.02);
+        }
+
+        .pricing-card.featured:hover {
+            box-shadow: 0 16px 40px rgba(59, 130, 246, 0.2);
+        }
+
+        .pricing-badge {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .pricing-card h3 {
+            font-size: 22px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .pricing-price {
+            font-size: 48px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 20px 0;
+            letter-spacing: -2px;
+        }
+
+        .pricing-price span {
+            font-size: 17px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 28px 0 32px;
+        }
+
+        .pricing-features li {
+            padding: 13px 0;
+            color: #475569;
+            font-size: 15px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: start;
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features li:before {
+            content: "✓";
+            color: #3b82f6;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .pricing-features li.highlight {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .pricing-card .btn-primary,
+        .pricing-card .btn-secondary {
+            width: 100%;
+            text-align: center;
+            display: block;
+            font-size: 16px;
+        }
+
+        /* CTA Section */
+        .final-cta {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .final-cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .final-cta h2 {
+            font-size: 44px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .final-cta p {
+            font-size: 20px;
+            margin-bottom: 36px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .whatsapp-btn {
+            background: #25d366;
+            color: white;
+            padding: 17px 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            display: inline-block;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-2px);
+            background: #20ba5a;
+            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+        }
+
+        .final-cta .note {
+            margin-top: 28px;
+            font-size: 15px;
+            opacity: 0.85;
+        }
+
+        /* Footer */
+        footer {
+            background: #0f172a;
+            color: rgba(255,255,255,0.8);
+            padding: 48px 0;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 6px 0;
+            font-size: 15px;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        .footer-divider {
+            margin: 24px 0;
+            opacity: 0.2;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            header {
+                padding: 14px 0;
+            }
+
+            .logo-container {
+                height: 36px;
+            }
+
+            .logo-img,
+            .logo-reveal {
+                height: 36px;
+            }
+
+            .cta-button {
+                padding: 9px 18px;
+                font-size: 14px;
+            }
+
+            .hero {
+                padding: 60px 0 80px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .section-subtitle {
+                font-size: 17px;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+
+            .benefits-grid,
+            .tech-grid,
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .final-cta {
+                padding: 70px 0;
+            }
+
+            .final-cta h2 {
+                font-size: 32px;
+            }
+
+            .final-cta p {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1400 720'%3E%3Ctext x='25' y='540' font-family='Arial Black, sans-serif' font-size='420' font-weight='900'%3E%3Ctspan fill='%2339AEFD'%3Esterra%3C/tspan%3E%3Ctspan fill='%233a3a3a'%3Edev%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="SterraDev" class="logo-reveal">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 720'%3E%3Ctext x='25' y='540' font-family='Arial Black, sans-serif' font-size='420' font-weight='900'%3E%3Ctspan fill='%2339AEFD'%3Es%3C/tspan%3E%3Ctspan fill='%233a3a3a'%3Edev%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="SterraDev" class="logo-img">
+                </div>
+                <a href="#contato" class="cta-button">Pedir Orçamento</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Seu site profissional, do jeito que você precisa.</h1>
+                <p>Sites e landing pages personalizados sob medida para o seu negócio. Orçamento gratuito, entrega rápida e suporte quando precisar.</p>
+                <div class="hero-buttons">
+                    <a href="#contato" class="btn-primary">Solicitar Orçamento Grátis</a>
+                    <a href="#como-funciona" class="btn-secondary">Como funciona</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Por que fazer seu site com a gente?</h2>
+                <p class="section-subtitle">Não fazemos site de modelo. Cada projeto é único e feito pensando no seu negócio.</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <span class="benefit-icon">🎨</span>
+                    <h3>Design sob medida</h3>
+                    <p>Nada de template genérico. A gente desenha e desenvolve pensando na sua marca e no seu público.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">⚡</span>
+                    <h3>Rápido de verdade</h3>
+                    <p>Site otimizado que carrega em menos de 2 segundos. Google ama e seus clientes também.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">📱</span>
+                    <h3>Perfeito em qualquer tela</h3>
+                    <p>Responsivo de verdade. Testado em celular, tablet e desktop para funcionar sem falha.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">🚀</span>
+                    <h3>SEO já incluído</h3>
+                    <p>Cuidamos da parte técnica para seu site aparecer bem no Google desde o primeiro dia.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">💎</span>
+                    <h3>Código limpo e moderno</h3>
+                    <p>Desenvolvemos com tecnologias atuais. Nada de gambiarra ou sistema antigo.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">🔒</span>
+                    <h3>Seguro e confiável</h3>
+                    <p>HTTPS, backups automáticos e hospedagem de qualidade. Seu site sempre seguro e online.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works" id="como-funciona">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Como funciona</h2>
+                <p class="section-subtitle">Processo simples e transparente, do primeiro contato até o site no ar.</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Você manda mensagem</h3>
+                    <p>Chama a gente no WhatsApp contando o que precisa. Quanto mais detalhes, melhor o orçamento.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>A gente monta a proposta</h3>
+                    <p>Criamos um orçamento personalizado com escopo, prazo e valor. Tudo transparente e sem surpresa.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Desenvolvimento</h3>
+                    <p>Aprovou? Começamos o trabalho. Você acompanha o progresso e dá feedbacks até ficar do jeito que quer.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Site no ar</h3>
+                    <p>Colocamos online, configuramos tudo e entregamos. Aí você decide se quer contratar suporte mensal.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tech-stack">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Tecnologias que usamos</h2>
+                <p class="section-subtitle">Escolhemos cada ferramenta pensando em performance, manutenção e resultado.</p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>React / Next.js</h3>
+                    <p>Mesma tech que Netflix e Airbnb usam. Sites super rápidos e fáceis de escalar conforme você cresce.</p>
+                </div>
+                <div class="tech-card">
+                    <h3>Tailwind CSS</h3>
+                    <p>Design profissional sem peso extra. Código limpo que facilita futuras atualizações.</p>
+                </div>
+                <div class="tech-card">
+                    <h3>Vercel / Netlify</h3>
+                    <p>Hospedagem premium com CDN global. Seu site sempre rápido, não importa de onde acessam.</p>
+                </div>
+                <div class="tech-card">
+                    <h3>TypeScript</h3>
+                    <p>Menos bugs, mais qualidade. Desenvolvemos com padrão profissional que você percebe na estabilidade.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Planos de suporte</h2>
+                <p class="section-subtitle">Depois que seu site estiver pronto, você pode contratar suporte mensal para ficar tranquilo.</p>
+            </div>
+
+            <div class="pricing-note">
+                <p><strong>Atenção:</strong> Esses planos são para manutenção e suporte <strong>DEPOIS</strong> que seu site já estiver desenvolvido e no ar. Para criar seu site do zero, solicite um orçamento personalizado — é grátis!</p>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Básico</h3>
+                    <div class="pricing-price">R$ 197<span>/mês</span></div>
+                    <ul class="pricing-features">
+                        <li>Troca de textos e imagens</li>
+                        <li>Resposta em até 48h por email</li>
+                        <li>2 horas de trampo técnico/mês</li>
+                        <li>Backup toda semana</li>
+                        <li>A gente monitora se tá no ar</li>
+                    </ul>
+                    <a href="#contato" class="btn-secondary">Contratar Suporte</a>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Mais escolhido</div>
+                    <h3>Profissional</h3>
+                    <div class="pricing-price">R$ 397<span>/mês</span></div>
+                    <ul class="pricing-features">
+                        <li>Tudo do plano Básico</li>
+                        <li>Prioridade, responde em 24h</li>
+                        <li>5 horas de trampo técnico/mês</li>
+                        <li>Adiciona funcionalidades novas</li>
+                        <li>Otimização de SEO mensal</li>
+                        <li>Backup todo dia</li>
+                        <li class="highlight">Cuida do domínio pra você (até R$100/ano)</li>
+                    </ul>
+                    <a href="#contato" class="btn-primary">Contratar Suporte</a>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Premium</h3>
+                    <div class="pricing-price">R$ 697<span>/mês</span></div>
+                    <ul class="pricing-features">
+                        <li>Tudo do plano Profissional</li>
+                        <li>Atendimento VIP em 12h</li>
+                        <li>10 horas de trampo técnico/mês</li>
+                        <li>Desenvolve features customizadas</li>
+                        <li>SEO avançado e relatórios</li>
+                        <li>Reunião mensal de estratégia</li>
+                        <li>Consultoria de marketing digital</li>
+                        <li class="highlight">Domínio premium incluído (até R$200/ano)</li>
+                    </ul>
+                    <a href="#contato" class="btn-secondary">Contratar Suporte</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta" id="contato">
+        <div class="container">
+            <div class="final-cta-content">
+                <h2>Bora começar?</h2>
+                <p>Manda uma mensagem no WhatsApp com a ideia do seu projeto. A gente monta um orçamento personalizado e sem compromisso pra você.</p>
+                <a href="https://wa.me/5511999999999?text=Oi!%20Quero%20fazer%20um%20orçamento%20para%20meu%20site" class="whatsapp-btn">💬 Solicitar Orçamento Grátis</a>
+                <p class="note">Resposta rápida • Orçamento sem compromisso • Atendimento direto</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p><strong>SterraDev</strong></p>
+            <p>Sites e landing pages profissionais sob medida</p>
+            <hr class="footer-divider">
+            <p>© 2025 SterraDev — Feito com atenção aos detalhes</p>
+        </div>
+    </footer>
+</body>
+</html>
