@@ -241,6 +241,10 @@
             border-color: #e5e5e5;
         }
 
+        .portfolio-card:hover .portfolio-image {
+            transform: scale(1.05);
+        }
+
         .portfolio-image {
             width: 100%;
             height: 240px;
@@ -251,6 +255,7 @@
             font-size: 48px;
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
         }
 
         .portfolio-card:nth-child(1) .portfolio-image {
@@ -669,6 +674,127 @@
             text-decoration: underline;
         }
 
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 95%;
+            max-width: 1400px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #0a0a0a;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 32px;
+            color: #737373;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: #f0f0f0;
+            color: #0a0a0a;
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow: hidden;
+            background: white;
+        }
+
+        .modal-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .modal-footer {
+            padding: 20px 32px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: flex-end;
+            background: #fafafa;
+        }
+
+        .btn-modal {
+            background: #0a0a0a;
+            color: white;
+            padding: 12px 32px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-modal:hover {
+            background: #1a1a1a;
+            transform: translateY(-1px);
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 0 20px;
@@ -751,6 +877,21 @@
             .hero-visual {
                 display: none;
             }
+
+            .modal-content {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+            }
+
+            .modal-header,
+            .modal-footer {
+                padding: 16px 20px;
+            }
+
+            .modal-title {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
@@ -789,7 +930,7 @@
                 <p class="section-subtitle">Alguns exemplos do nosso trabalho para diferentes tipos de negócios.</p>
             </div>
             <div class="portfolio-grid">
-                <div class="portfolio-card">
+                <div class="portfolio-card" onclick="openProject('fitzone')">
                     <div class="portfolio-image">🏋️</div>
                     <div class="portfolio-content">
                         <span class="portfolio-tag">Academia</span>
@@ -797,7 +938,7 @@
                         <p>Landing page moderna para captação de alunos com sistema de agendamento de aula experimental integrado.</p>
                     </div>
                 </div>
-                <div class="portfolio-card">
+                <div class="portfolio-card" onclick="openProject('sabor')">
                     <div class="portfolio-image">🍽️</div>
                     <div class="portfolio-content">
                         <span class="portfolio-tag">Restaurante</span>
@@ -805,7 +946,7 @@
                         <p>Site institucional com cardápio digital, galeria de pratos e sistema de reservas online para restaurante gourmet.</p>
                     </div>
                 </div>
-                <div class="portfolio-card">
+                <div class="portfolio-card" onclick="openProject('verde')">
                     <div class="portfolio-image">🛍️</div>
                     <div class="portfolio-content">
                         <span class="portfolio-tag">E-commerce</span>
@@ -816,6 +957,22 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal de Visualização -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Visualizar Projeto</div>
+                <button class="modal-close" onclick="closeProject()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="projectFrame" frameborder="0"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal" onclick="closeProject()">Fechar</button>
+            </div>
+        </div>
+    </div>
 
     <section class="benefits">
         <div class="container">
@@ -998,5 +1155,78 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // URLs dos projetos (você pode substituir por URLs reais quando hospedar)
+        const projects = {
+            fitzone: 'data:text/html;charset=utf-8,' + encodeURIComponent(document.getElementById('fitzone-template').innerHTML),
+            sabor: 'data:text/html;charset=utf-8,' + encodeURIComponent(document.getElementById('sabor-template').innerHTML),
+            verde: 'data:text/html;charset=utf-8,' + encodeURIComponent(document.getElementById('verde-template').innerHTML)
+        };
+
+        const projectTitles = {
+            fitzone: 'FitZone Academy - Academia',
+            sabor: 'Sabor & Arte - Restaurante',
+            verde: 'Verde Natural - E-commerce'
+        };
+
+        function openProject(projectId) {
+            const modal = document.getElementById('projectModal');
+            const frame = document.getElementById('projectFrame');
+            const title = document.getElementById('modalTitle');
+            
+            title.textContent = projectTitles[projectId];
+            frame.src = projects[projectId];
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProject() {
+            const modal = document.getElementById('projectModal');
+            const frame = document.getElementById('projectFrame');
+            
+            modal.classList.remove('show');
+            frame.src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Fechar modal ao clicar fora dele
+        document.getElementById('projectModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeProject();
+            }
+        });
+
+        // Fechar modal com ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeProject();
+            }
+        });
+    </script>
+
+    <!-- Templates dos projetos (escondidos) -->
+    <template id="fitzone-template">
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,sans-serif;background:#000;color:#fff}.container{max-width:1200px;margin:0 auto;padding:0 24px}header{background:rgba(0,0,0,.95);border-bottom:1px solid rgba(255,255,255,.1);padding:20px 0}.header-content{display:flex;justify-content:space-between;align-items:center}.logo{font-size:28px;font-weight:900;color:#fff}.logo span{color:#ff4d4d}.hero{min-height:90vh;display:flex;align-items:center;padding:80px 0;position:relative}.hero::before{content:'';position:absolute;top:-20%;right:-20%;width:1000px;height:1000px;background:radial-gradient(circle,rgba(255,77,77,.15) 0%,transparent 70%);border-radius:50%;animation:pulse 8s ease-in-out infinite}@keyframes pulse{0%,100%{transform:scale(1);opacity:.15}50%{transform:scale(1.1);opacity:.25}}.hero-badge{display:inline-block;background:rgba(255,77,77,.15);border:1px solid rgba(255,77,77,.3);color:#ff6b6b;padding:8px 18px;border-radius:24px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:32px}.hero h1{font-size:84px;margin-bottom:28px;line-height:1;font-weight:900;letter-spacing:-3px;text-transform:uppercase}.hero h1 .highlight{background:linear-gradient(135deg,#ff4d4d 0%,#ff8c8c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.hero p{font-size:24px;color:#a3a3a3;margin-bottom:48px;line-height:1.6;max-width:600px}.btn-primary{background:linear-gradient(135deg,#ff4d4d 0%,#ff1a1a 100%);color:#fff;padding:20px 48px;border-radius:12px;text-decoration:none;font-weight:700;font-size:18px;text-transform:uppercase;letter-spacing:.5px;display:inline-block;box-shadow:0 8px 24px rgba(255,77,77,.4)}.stats{background:#0a0a0a;padding:60px 0;border-top:1px solid rgba(255,255,255,.05)}.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:48px}.stat-item{text-align:center}.stat-number{font-size:56px;font-weight:900;color:#ff4d4d;margin-bottom:8px}.stat-label{font-size:16px;color:#737373;text-transform:uppercase}</style></head><body><header><div class="container"><div class="header-content"><div class="logo">Fit<span>Zone</span></div></div></div></header><section class="hero"><div class="container"><div class="hero-content"><div class="hero-badge">💪 A melhor academia de Manaus</div><h1>Transforme <span class="highlight">seu corpo</span> e mente</h1><p>Equipamentos de última geração, instrutores certificados e ambiente motivador.</p><a href="#" class="btn-primary">Agendar Aula Grátis</a></div></div></section><section class="stats"><div class="container"><div class="stats-grid"><div class="stat-item"><div class="stat-number">500+</div><div class="stat-label">Alunos ativos</div></div><div class="stat-item"><div class="stat-number">15</div><div class="stat-label">Instrutores</div></div><div class="stat-item"><div class="stat-number">800m²</div><div class="stat-label">de área</div></div><div class="stat-item"><div class="stat-number">24/7</div><div class="stat-label">Acesso</div></div></div></div></section></body></html>
+    </template>
+    <template id="sabor-template">
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Georgia,serif;background:#faf9f7;color:#1a1a1a}.container{max-width:1200px;margin:0 auto;padding:0 24px}header{background:rgba(250,249,247,.98);border-bottom:1px solid #e8e5df;padding:24px 0}.header-content{display:flex;justify-content:space-between;align-items:center}.logo{font-size:32px;font-weight:400;color:#2d2d2d;font-style:italic}.logo span{color:#c49a6c;font-weight:700}.hero{min-height:85vh;background:linear-gradient(135deg,#faf9f7 0%,#f5f3ef 100%);display:flex;align-items:center;padding:100px 0}.hero-badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e8e5df;color:#c49a6c;padding:8px 20px;border-radius:30px;font-size:13px;font-weight:600;margin-bottom:32px}.hero-badge::before{content:'⭐';font-size:16px}.hero h1{font-size:72px;margin-bottom:32px;line-height:1.1;font-weight:400;letter-spacing:-1px}.hero h1 strong{font-weight:700;color:#c49a6c;font-style:italic}.hero p{font-size:20px;color:#525252;margin-bottom:48px;line-height:1.8;font-family:system-ui}.hero-info{display:flex;gap:32px;margin-bottom:48px}.info-item{display:flex;align-items:center;gap:12px}.info-icon{width:40px;height:40px;background:#fff;border:1px solid #e8e5df;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}.info-text{font-size:14px;color:#525252;font-family:system-ui}.info-text strong{display:block;color:#1a1a1a;font-weight:600}.btn-primary{background:#c49a6c;color:#fff;padding:18px 40px;border-radius:8px;text-decoration:none;font-weight:600;font-size:16px;display:inline-block;font-family:system-ui;box-shadow:0 4px 16px rgba(196,154,108,.2)}.featured{padding:100px 0;background:#fff}.section-title{font-size:56px;text-align:center;margin-bottom:80px;font-weight:400}.dishes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:40px}.dish-card{background:#faf9f7;border-radius:12px;overflow:hidden;border:1px solid #e8e5df}.dish-image{width:100%;height:280px;background:linear-gradient(135deg,#e8d5c0 0%,#c4a883 100%);display:flex;align-items:center;justify-content:center;font-size:80px}.dish-content{padding:32px;font-family:system-ui}.dish-price{background:#c49a6c;color:#fff;padding:4px 12px;border-radius:6px;font-size:14px;font-weight:700;display:inline-block;margin-bottom:16px}.dish-content h3{font-size:24px;margin-bottom:12px;font-family:Georgia}.dish-content p{color:#525252;font-size:15px}</style></head><body><header><div class="container"><div class="header-content"><div class="logo">Sabor <span>&</span> Arte</div></div></div></header><section class="hero"><div class="container"><div><div class="hero-badge">Gastronomia de Excelência</div><h1>Onde cada prato conta uma <strong>história</strong></h1><p>Combinamos técnicas clássicas da culinária europeia com ingredientes frescos da Amazônia.</p><div class="hero-info"><div class="info-item"><div class="info-icon">⏰</div><div class="info-text"><strong>Horário</strong> Ter-Dom 12h-23h</div></div><div class="info-item"><div class="info-icon">📍</div><div class="info-text"><strong>Localização</strong> Adrianópolis</div></div></div><a href="#" class="btn-primary">Reservar Mesa</a></div></div></section><section class="featured"><div class="container"><h2 class="section-title">Pratos Assinatura</h2><div class="dishes-grid"><div class="dish-card"><div class="dish-image">🐟</div><div class="dish-content"><div class="dish-price">R$ 89</div><h3>Tambaqui ao Molho de Tucupi</h3><p>Peixe regional grelhado com redução de tucupi, purê de macaxeira trufado e chips de jambu.</p></div></div><div class="dish-card"><div class="dish-image" style="background:linear-gradient(135deg,#a8edea 0%,#80d0c7 100%)">🥩</div><div class="dish-content"><div class="dish-price">R$ 125</div><h3>Filé ao Molho de Pupunha</h3><p>Mignon nobre ao ponto, molho cremoso de pupunha, risoto de cogumelos selvagens.</p></div></div></div></div></section></body></html>
+    </template>
+    <template id="verde-template">
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,sans-serif;background:#fff;color:#1a1a1a}.container{max-width:1200px;margin:0 auto;padding:0 24px}header{background:rgba(255,255,255,.98);border-bottom:1px solid #e8f5e3;padding:20px 0}.header-content{display:flex;justify-content:space-between;align-items:center}.logo{display:flex;align-items:center;gap:10px;font-size:28px;font-weight:800;color:#2d5016}.logo span{color:#6bb042}.hero{min-height:80vh;background:linear-gradient(180deg,#f8fcf6 0%,#fff 100%);display:flex;align-items:center;padding:80px 0;position:relative}.hero::before{content:'';position:absolute;top:-20%;right:-10%;width:800px;height:800px;background:radial-gradient(circle,rgba(107,176,66,.08) 0%,transparent 70%);border-radius:50%}.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative;z-index:2}.hero-badge{display:inline-flex;align-items:center;gap:8px;background:#f0f9eb;border:1px solid #d4edca;color:#4a7c31;padding:8px 18px;border-radius:24px;font-size:13px;font-weight:700;margin-bottom:28px}.hero-badge::before{content:'🌱';font-size:16px}.hero h1{font-size:64px;margin-bottom:24px;line-height:1.1;font-weight:800;letter-spacing:-2px}.hero h1 .highlight{color:#6bb042}.hero p{font-size:20px;color:#525252;margin-bottom:40px}.hero-stats{display:flex;gap:40px;margin-bottom:48px}.stat-item{display:flex;align-items:center;gap:12px}.stat-icon{width:48px;height:48px;background:#f0f9eb;border:1px solid #d4edca;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}.stat-text{font-size:14px;color:#525252}.stat-text strong{display:block;color:#2d5016;font-weight:700;font-size:16px}.btn-primary{background:#6bb042;color:#fff;padding:18px 40px;border-radius:10px;text-decoration:none;font-weight:600;font-size:16px;display:inline-block;box-shadow:0 4px 16px rgba(107,176,66,.3)}.product-showcase{display:grid;grid-template-columns:1fr 1fr;gap:20px}.product-card-hero{background:#fff;border:1px solid #e8f5e3;border-radius:16px;padding:24px}.product-image-hero{width:100%;height:180px;background:linear-gradient(135deg,#e8f5e3 0%,#f0f9eb 100%);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:64px;margin-bottom:16px}.product-name{font-size:15px;font-weight:600;margin-bottom:8px}.product-price{font-size:18px;font-weight:700;color:#6bb042}.categories{padding:100px 0;background:#fff}.section-title{font-size:48px;text-align:center;margin-bottom:80px;font-weight:800;letter-spacing:-1.5px}.categories-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}.category-card{background:linear-gradient(135deg,#f8fcf6 0%,#fff 100%);border:1px solid #e8f5e3;border-radius:16px;padding:40px 32px;text-align:center}.category-icon{font-size:56px;margin-bottom:20px;display:block}.category-card h3{font-size:20px;margin-bottom:8px;color:#2d5016;font-weight:700}.category-card p{color:#737373;font-size:14px}@media (max-width:968px){.hero-grid{grid-template-columns:1fr}.product-showcase{grid-template-columns:1fr 1fr}}</style></head><body><header><div class="container"><div class="header-content"><div class="logo">🌿 <span>Verde</span>Natural</div></div></div></header><section class="hero"><div class="container"><div class="hero-grid"><div><div class="hero-badge">100% Natural & Orgânico</div><h1>Saúde e <span class="highlight">bem-estar</span> em cada produto</h1><p>Produtos naturais certificados, direto dos melhores produtores do Brasil.</p><div class="hero-stats"><div class="stat-item"><div class="stat-icon">✓</div><div class="stat-text"><strong>Certificado</strong> 100% Orgânico</div></div><div class="stat-item"><div class="stat-icon">🚚</div><div class="stat-text"><strong>Entrega</strong> Em todo Brasil</div></div></div><a href="#" class="btn-primary">Explorar Produtos</a></div><div class="product-showcase"><div class="product-card-hero"><div class="product-image-hero" style="background:linear-gradient(135deg,#ffeaa7 0%,#fdcb6e 100%)">🍯</div><div class="product-name">Mel Orgânico</div><div class="product-price">R$ 45</div></div><div class="product-card-hero"><div class="product-image-hero" style="background:linear-gradient(135deg,#a29bfe 0%,#6c5ce7 100%)">🥜</div><div class="product-name">Mix de Castanhas</div><div class="product-price">R$ 32</div></div><div class="product-card-hero"><div class="product-image-hero" style="background:linear-gradient(135deg,#fab1a0 0%,#ff7675 100%)">🫖</div><div class="product-name">Chás Naturais</div><div class="product-price">R$ 28</div></div><div class="product-card-hero"><div class="product-image-hero" style="background:linear-gradient(135deg,#81ecec 0%,#00cec9 100%)">🧴</div><div class="product-name">Óleo de Coco</div><div class="product-price">R$ 38</div></div></div></div></div></section><section class="categories"><div class="container"><h2 class="section-title">Categorias</h2><div class="categories-grid"><div class="category-card"><span class="category-icon">🍯</span><h3>Alimentos</h3><p>Mel, grãos, farinhas e mais</p></div><div class="category-card"><span class="category-icon">🫖</span><h3>Chás & Infusões</h3><p>Variedades premium</p></div><div class="category-card"><span class="category-icon">💊</span><h3>Suplementos</h3><p>Vitaminas naturais</p></div><div class="category-card"><span class="category-icon">🧴</span><h3>Cosméticos</h3><p>Beleza natural</p></div></div></div></section></body></html>
+    </template>
 </body>
 </html>
+</body>
+</html>d">
+                    <h3>React / Next.js</h3>
+                    <p>Mesma tecnologia que Netflix e Airbnb. Sites rápidos, escaláveis e fáceis de atualizar no futuro.</p>
+                </div>
+                <div class="tech-card">
+                    <h3>Tailwind CSS</h3>
+                    <p>Design profissional sem peso desnecessário. Código limpo que facilita manutenção e mudanças.</p>
+                </div>
+                <div class="tech-car
